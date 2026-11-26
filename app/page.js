@@ -1,15 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardEvento from "@/components/CardEvento/CardEvento";
+import Carregando from "@/components/Carregando/Carregando";
 import Filtro from "@/components/Filtro/Filtro";
 import Mensagem from "@/components/Mensagem/Mensagem";
-import { eventos, categorias } from "@/dados/exemplo";
+import { listarCategorias, listarEventos } from "@/lib/banco";
 import styles from "./page.module.css";
-import Cabecalho from "@/components/Cabecalho/Cabecalho";
 
 export default function PaginaInicial() {
-  const [categoria, setCategoria] = useState(0);
+  const [eventos, setEventos] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [categoria, setCategoria] = useState(0); // 0 = todas
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState("");
+
+  useEffect(() => {
+    Promise.all([listarEventos(), listarCategorias()])
+      .then(([listaEventos, listaCategorias]) => {
+        setEventos(listaEventos);
+        setCategorias(listaCategorias);
+      })
+      .catch((e) => setErro(e.message))
+      .finally(() => setCarregando(false));
+  }, []);
+
+  if (carregando) return <Carregando />;
+  if (erro) return <Mensagem tipo="erro">{erro}</Mensagem>;
+
   const visiveis =
     categoria === 0
       ? eventos

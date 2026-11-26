@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styles from "./CardEvento.module.css";
-
+import Botao from "@/components/Botao/Botao";
 export default function CardEvento({ evento }) {
   return (
     <li>
@@ -10,6 +10,9 @@ export default function CardEvento({ evento }) {
         <p className={styles.info}>
           {evento.local} · {evento.data_hora}
         </p>
+        <Botao variante="principal" type="button">
+          Ver detalhes
+        </Botao>
       </Link>
     </li>
   );

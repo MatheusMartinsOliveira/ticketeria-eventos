@@ -10,6 +10,10 @@
   border: none;
 }
 
+.principal:hover {
+  background: var(--cor-principal-hover);
+}
+
 .secundario {
   background: transparent;
   color: var(--cor-texto);
